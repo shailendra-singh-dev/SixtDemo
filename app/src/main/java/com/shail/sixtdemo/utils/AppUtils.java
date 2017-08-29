@@ -8,10 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by Shailendra Singh on 28-Aug-17.
  * iTexico
@@ -19,17 +15,7 @@ import org.json.JSONObject;
  */
 public class AppUtils {
 
-    public static final float GOOGLE_MAP_ZOOM_LEVEL_DEFAULT = 16;
-    public static final double LOCATION_LATITUDE_DEFAULT = 0L;
-    public static final double LOCATION_LONGITUDE_DEFAULT = 0L;
-    public static final long MESSAGE_REFRESH_TIME = 30 * 1000;
-    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1000;
-    public static final int REQUEST_CHECK_SETTINGS = PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION + 1;
-    public static final int REQUEST_PLAY_SERVICES_RESOLVE_ERROR = REQUEST_CHECK_SETTINGS + 1;
-    public static final String BROADCAST_GOOGLE_SERVICES_CONNECTION_FAILED = "google_services_connection_failed";
-    public static final String GOOGLE_SERVICES_CONNECTION_FAILED_RESULT = "connection_failed_result";
-    public static final String BROADCAST_GOOGLE_SERVICES_CONNECTION_SUCCESS = "google_services_connection_success";
-    public static final int HTTP_CODE_SUCCESS = 200;
+    public static final float GOOGLE_MAP_ZOOM_LEVEL_DEFAULT = 14;
     public static final int SUCCESS = 1;
 
     public static boolean isInternetConnectionAvailable(Context con) {
@@ -61,17 +47,19 @@ public class AppUtils {
         return bitmap;
     }
 
-    public static boolean isJSONValid(String test) {
-        try {
-            new JSONObject(test);
-        } catch (JSONException ex) {
-            try {
-                new JSONArray(test);
-            } catch (JSONException ex1) {
-                return false;
-            }
-            return false;
+    public static String getStringFromNumber(Number number) {
+        if (null == number) {
+            return "";
         }
-        return true;
+        String str = "";
+        try {
+            str = String.valueOf(number);
+        } catch (NumberFormatException exception) {
+            str = "";
+        } catch (Exception exception) {
+            str = "";
+        }
+        return str;
     }
+
 }

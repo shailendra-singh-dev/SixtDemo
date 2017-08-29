@@ -1,65 +1,30 @@
 package com.shail.sixtdemo.activities;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.shail.sixtdemo.BuildConfig;
-import com.shail.sixtdemo.LocationUpdatesService;
 import com.shail.sixtdemo.R;
 import com.shail.sixtdemo.adapter.CarsPageAdapter;
-import com.shail.sixtdemo.application.SixtApplication;
-import com.shail.sixtdemo.interfaces.AsyncCallBackInterface;
 import com.shail.sixtdemo.messages.MessagePumpEngine;
-import com.shail.sixtdemo.server_connection.Webservices;
 import com.shail.sixtdemo.utils.CommonActions;
-import com.shail.sixtdemo.utils.Print;
 
-import static com.shail.sixtdemo.utils.AppUtils.BROADCAST_GOOGLE_SERVICES_CONNECTION_FAILED;
-import static com.shail.sixtdemo.utils.AppUtils.BROADCAST_GOOGLE_SERVICES_CONNECTION_SUCCESS;
-import static com.shail.sixtdemo.utils.AppUtils.GOOGLE_SERVICES_CONNECTION_FAILED_RESULT;
-import static com.shail.sixtdemo.utils.AppUtils.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
-import static com.shail.sixtdemo.utils.AppUtils.REQUEST_CHECK_SETTINGS;
-import static com.shail.sixtdemo.utils.AppUtils.REQUEST_PLAY_SERVICES_RESOLVE_ERROR;
-import static com.shail.sixtdemo.utils.AppUtils.SUCCESS;
+/**
+ * Created by Shailendra Singh on 28-Aug-17.
+ * iTexico
+ * ssingh@itexico.net
+ */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Handler.Callback {
 
-    private CarsPageAdapter mPagerAdapter;
+    private static final MessagePumpEngine.MessageID[] MESSAGES = {MessagePumpEngine.MessageID.INTERNET_NOT_AVAILABLE};
+
+    private final Handler mMessageHandler = new Handler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +34,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onResume() {
+        super.onResume();
+        MessagePumpEngine.addAppMessageHandler(mMessageHandler, MESSAGES);
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
+        MessagePumpEngine.removeAppMessageHandler(mMessageHandler, MESSAGES);
     }
 
     private void initView() {
@@ -86,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new CarsPageAdapter(getSupportFragmentManager());
-        for (int i = 0; i < mPagerAdapter.getCount(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(mPagerAdapter.getPageTitle(i)));
+        CarsPageAdapter pageAdapter = new CarsPageAdapter(getSupportFragmentManager());
+        for (int i = 0; i < pageAdapter.getCount(); i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(pageAdapter.getPageTitle(i)));
         }
 
-        viewPager.setAdapter(mPagerAdapter);
+        viewPager.setAdapter(pageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -109,4 +77,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean handleMessage(Message message) {
+        final MessagePumpEngine.MessageID id = MessagePumpEngine.MessageID.getID(message.what);
+        switch (id) {
+            case INTERNET_NOT_AVAILABLE:
+                CommonActions.showAlert(this, getString(R.string.error_internet_not_found), R.string.alert_dialog_positive_btn_text_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                break;
+        }
+        return false;
+    }
 }

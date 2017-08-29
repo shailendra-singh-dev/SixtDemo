@@ -25,7 +25,7 @@ import static com.shail.sixtdemo.utils.AppUtils.SUCCESS;
 
 public abstract class BaseFragment extends Fragment implements AsyncCallBackInterface {
 
-    protected static ArrayList<Car> CARS;
+    protected static ArrayList<Car> mCarArrayList;
     protected MainActivity mMainActivity;
 
     @Override
@@ -37,13 +37,15 @@ public abstract class BaseFragment extends Fragment implements AsyncCallBackInte
     @Override
     public void onStart() {
         super.onStart();
-        Webservices.sendGetCall(this, BuildConfig.REQUEST_URL);
+        if(null == mCarArrayList || mCarArrayList.isEmpty()){
+            Webservices.sendGetCall(this, BuildConfig.REQUEST_URL);
+        }
     }
 
     @Override
     public void onTaskCompleted(String response, int taskStatus) {
         if (taskStatus == SUCCESS) {
-            CARS = JasonDataParser.getCars(response);
+            mCarArrayList = JasonDataParser.getCars(response);
             updateView();
         } else {
             CommonActions.showAlert(mMainActivity, getString(R.string.error_data_not_found), R.string.alert_dialog_positive_btn_text_ok, new DialogInterface.OnClickListener() {

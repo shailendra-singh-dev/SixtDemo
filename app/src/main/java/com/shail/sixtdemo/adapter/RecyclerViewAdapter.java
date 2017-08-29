@@ -5,33 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Target;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by iTexico Developer on 12/21/2016.
+ * Created by Shailendra Singh on 28-Aug-17.
+ * iTexico
+ * ssingh@itexico.net
  */
-
 public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private final RecyclerView mRecyclerView;
-
-    public RecyclerViewAdapter(RecyclerView recyclerView) {
-        mRecyclerView = recyclerView;
+    public RecyclerViewAdapter() {
         setHasStableIds(true);
     }
-
-    public void add(int position) {
-        notifyItemInserted(position);
-    }
-
-    public void remove(int position) {
-        notifyItemRemoved(position);
-    }
-
-    public abstract void setSelected(int position);
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private Map<Integer, View> mMapView;
@@ -40,11 +26,6 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
             super(view);
             mMapView = new HashMap<>();
             mMapView.put(0, view);
-        }
-
-        public void initViewList(int[] idList) {
-            for (int id : idList)
-                initViewById(id);
         }
 
         public void initViewById(int id) {

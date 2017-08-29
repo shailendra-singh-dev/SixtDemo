@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.shail.sixtdemo.BuildConfig;
 import com.shail.sixtdemo.R;
 import com.shail.sixtdemo.application.SixtApplication;
 import com.shail.sixtdemo.fragments.CarsListView;
@@ -42,7 +43,7 @@ public class CarsPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return BuildConfig.TABS_COUNT;
     }
 
     @Override

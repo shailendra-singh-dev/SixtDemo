@@ -1,12 +1,7 @@
 package com.shail.sixtdemo.fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -18,9 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -35,8 +28,6 @@ import com.shail.sixtdemo.utils.Print;
 import java.util.ArrayList;
 
 import static com.shail.sixtdemo.utils.AppUtils.GOOGLE_MAP_ZOOM_LEVEL_DEFAULT;
-import static com.shail.sixtdemo.utils.AppUtils.LOCATION_LATITUDE_DEFAULT;
-import static com.shail.sixtdemo.utils.AppUtils.LOCATION_LONGITUDE_DEFAULT;
 
 /**
  * Created by Shailendra Singh on 28-Aug-17.
@@ -50,13 +41,9 @@ public class CarsMapView extends BaseFragment implements GoogleMap.OnMarkerClick
 
     private GoogleMap mGoogleMap;
     private float mGoogleMapCurrentZoomLevel;
-    private double mLastLocationLatitude;
-    private double mLastLocationLongitude;
 
     public static CarsMapView newInstance() {
-
         Bundle args = new Bundle();
-
         CarsMapView fragment = new CarsMapView();
         fragment.setArguments(args);
         return fragment;
@@ -87,9 +74,9 @@ public class CarsMapView extends BaseFragment implements GoogleMap.OnMarkerClick
     }
 
     private void setUpMap() {
-        SupportMapFragment customMapFragment = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map));
+        FragmentManager fragmentManager = getFragmentManager();
+        SupportMapFragment customMapFragment = ((SupportMapFragment) fragmentManager.findFragmentById(R.id.map));
         if (customMapFragment == null) {
-            FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             customMapFragment = SupportMapFragment.newInstance();
             fragmentTransaction.replace(R.id.map, customMapFragment).commit();
@@ -123,15 +110,14 @@ public class CarsMapView extends BaseFragment implements GoogleMap.OnMarkerClick
     }
 
     public void updateUserLocation() {
-        if (null == mMainActivity || null == CARS || CARS.isEmpty()) {
+        Print.i("updateUserLocation(),mCarArrayList:" + mCarArrayList);
+        if (null == mMainActivity || null == mCarArrayList || mCarArrayList.isEmpty()) {
             return;
         }
-
-        Print.i("updateUserLocation(),mLastLocationLatitude:" + mLastLocationLatitude + ",mLastLocationLongitude:" + mLastLocationLongitude);
         if (null != mGoogleMap) {
             mGoogleMap.clear();
 
-            ArrayList<Car> cars = CARS;
+            ArrayList<Car> cars = mCarArrayList;
             Car firstCar = cars.get(0);
             LatLng firstCarLatLng = new LatLng(firstCar.getLatitude(), firstCar.getLongitude());
 
@@ -139,13 +125,30 @@ public class CarsMapView extends BaseFragment implements GoogleMap.OnMarkerClick
             mGoogleMap.animateCamera(update);
 
             for (Car car : cars) {
+                String carName = car.getName();
+                String carLicensePlate = car.getLicensePlate();
+                String carMake = car.getMake();
+                String carSeries = car.getSeries();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(carName);
+                stringBuilder.append(" ");
+                stringBuilder.append(carSeries);
+                stringBuilder.append(" ");
+                stringBuilder.append(carMake);
+                stringBuilder.append(" ");
+                stringBuilder.append(carLicensePlate);
+                String carInfo = stringBuilder.toString();
+
                 LatLng latLng = new LatLng(car.getLatitude(), car.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions()
-                        .position(latLng);
+                        .position(latLng)
+                        .title(carInfo);
+
                 Marker locationMarker = mGoogleMap.addMarker(markerOptions);
+
                 PicassoMarker picassoMarker = new PicassoMarker(locationMarker);
-                String carCarImageUrl = car.getCarImageUrl();
-                CommonActions.loadImagebyPicasso(mMainActivity, carCarImageUrl, picassoMarker, android.R.drawable.ic_menu_mylocation, android.R.drawable.stat_notify_error);
+                String carImageUrl = car.getCarImageUrl();
+                CommonActions.loadImagebyPicasso(mMainActivity, carImageUrl, picassoMarker, android.R.drawable.ic_menu_mylocation, android.R.drawable.stat_notify_error);
             }
 
         }

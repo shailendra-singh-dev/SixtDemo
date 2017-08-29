@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * iTexico
  * ssingh@itexico.net
  */
-public class JasonDataParser {
 
+public class JasonDataParser {
 
     private static final String ID = "id";
     private static final String MODEL_IDENTIFIER = "modelIdentifier";
@@ -74,7 +74,7 @@ public class JasonDataParser {
                 car.setLatitude(latitude);
                 car.setLongitude(longitude);
                 car.setInnerCleanliness(innerCleanliness);
-                String carImageUrl = BuildConfig.BASE_URL + modelIdentifier + BuildConfig.BASE_URL_SEPERATOR + color + BuildConfig.BASE_URL_SEPERATOR + BuildConfig.BASE_URL_POSTFIX;
+                String carImageUrl = BuildConfig.BASE_URL_PREFIX + modelIdentifier + BuildConfig.BASE_URL_SEPERATOR + color + BuildConfig.BASE_URL_SEPERATOR + BuildConfig.BASE_URL_POSTFIX;
                 car.setCarImageUrl(carImageUrl);
 
                 cars.add(car);

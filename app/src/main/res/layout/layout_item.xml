@@ -5,32 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    app:cardUseCompatPadding="true"
     app:cardBackgroundColor="@color/white_txt"
-    app:cardElevation="@dimen/car_logo_parent_elevation">
+    app:cardElevation="@dimen/car_logo_parent_elevation"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/car_logo_parent_padding">
 
-        <com.shail.sixtdemo.views.AspectRatioImageView
+        <ImageView
+            android:scaleType="fitCenter"
             android:id="@+id/car_logo"
             android:layout_width="@dimen/car_logo_width"
             android:layout_height="@dimen/car_logo_height"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="@dimen/car_name_margin_right"
-            android:gravity="center"
-            app:aspectRatioEnabled="true" />
+            android:layout_marginBottom="@dimen/car_name_margin_right" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/car_logo"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/car_name"
+                android:layout_marginBottom="@dimen/car_name_margin_right"
+                android:id="@+id/car_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/car_name_margin_right"

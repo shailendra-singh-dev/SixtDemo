@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">SixtDemo</string>
-    <string name="alert_error_google_services" translatable="false">This device is not supported</string>
     <string name="alert_dialog_positive_btn_text_ok">Ok</string>
     <string name="error_data_not_found">Data not found</string>
     <string name="cars_listview">ListView</string>
     <string name="cars_mapview">MapView</string>
     <string name="map_api_key">AIzaSyAjxrKqvK8wXW1p6LnyhwX6KjnQEEPb8ig</string>
+    <string name="error_internet_not_found">Internet not available.Please enable it</string>
 </resources>

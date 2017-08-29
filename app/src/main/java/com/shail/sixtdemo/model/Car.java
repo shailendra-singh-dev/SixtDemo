@@ -1,13 +1,15 @@
 package com.shail.sixtdemo.model;
 
-import com.shail.sixtdemo.BuildConfig;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Shailendra Singh on 28-Aug-17.
  * iTexico
  * ssingh@itexico.net
  */
-public class Car {
+
+public class Car implements Parcelable {
 
     private String mID;
     private String mModelIdentifier;
@@ -25,6 +27,56 @@ public class Car {
     private double mLongitude;
     private String mInnerCleanliness;
     private String mCarImageUrl;
+
+    public Car() {
+        mID = "";
+        mModelIdentifier = "";
+        mModelName = "";
+        mName = "";
+        mMake = "";
+        mGroup = "";
+        mColor = "";
+        mSeries = "";
+        mFuelType = "";
+        mFuelLevel = 0;
+        mTransmission = "";
+        mLicensePlate = "";
+        mLatitude = 0;
+        mLongitude = 0;
+        mInnerCleanliness = "";
+        mCarImageUrl = "";
+    }
+
+    protected Car(Parcel in) {
+        mID = in.readString();
+        mModelIdentifier = in.readString();
+        mModelName = in.readString();
+        mName = in.readString();
+        mMake = in.readString();
+        mGroup = in.readString();
+        mColor = in.readString();
+        mSeries = in.readString();
+        mFuelType = in.readString();
+        mFuelLevel = in.readInt();
+        mTransmission = in.readString();
+        mLicensePlate = in.readString();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+        mInnerCleanliness = in.readString();
+        mCarImageUrl = in.readString();
+    }
+
+    public static final Creator<Car> CREATOR = new Creator<Car>() {
+        @Override
+        public Car createFromParcel(Parcel in) {
+            return new Car(in);
+        }
+
+        @Override
+        public Car[] newArray(int size) {
+            return new Car[size];
+        }
+    };
 
     public String getID() {
         return mID;
@@ -166,5 +218,30 @@ public class Car {
         }
         final Car car = (Car) object;
         return mID.equalsIgnoreCase(car.getID());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mID);
+        dest.writeString(mModelIdentifier);
+        dest.writeString(mModelName);
+        dest.writeString(mName);
+        dest.writeString(mMake);
+        dest.writeString(mGroup);
+        dest.writeString(mColor);
+        dest.writeString(mSeries);
+        dest.writeString(mFuelType);
+        dest.writeInt(mFuelLevel);
+        dest.writeString(mTransmission);
+        dest.writeString(mLicensePlate);
+        dest.writeDouble(mLatitude);
+        dest.writeDouble(mLongitude);
+        dest.writeString(mInnerCleanliness);
+        dest.writeString(mCarImageUrl);
     }
 }

@@ -11,12 +11,17 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'REQUEST_URL', '"http://www.codetalk.de/cars.json"'
-        buildConfigField 'String', 'BASE_URL', '"https://prod.drive-now-content.com/fileadmin/user_upload_global/assets/cars/"'
+        buildConfigField 'String', 'BASE_URL_PREFIX', '"https://prod.drive-now-content.com/fileadmin/user_upload_global/assets/cars/"'
         buildConfigField 'String', 'BASE_URL_SEPERATOR', '"/"'
         buildConfigField 'String', 'BASE_URL_POSTFIX', '"2x/car.png"'
+        buildConfigField 'int', 'TABS_COUNT', '2'
     }
     buildTypes {
+        debug {
+            buildConfigField 'boolean', 'DEBUG_MODE', 'true'
+        }
         release {
+            buildConfigField 'boolean', 'DEBUG_MODE', 'false'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -25,9 +30,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+
     //Support Library.
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:design:23.4.0'
@@ -39,12 +42,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
 
     //Google play services e.g Maps,GCM,AppIndexing
-    compile 'com.google.android.gms:play-services-gcm:9.8.0'
     compile 'com.google.android.gms:play-services-maps:9.8.0'
-    compile 'com.google.android.gms:play-services:9.8.0'
-    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
-    compile 'com.google.android.gms:play-services-auth:9.8.0'
-    compile 'com.google.android.gms:play-services-location:9.8.0'
 
     //Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'

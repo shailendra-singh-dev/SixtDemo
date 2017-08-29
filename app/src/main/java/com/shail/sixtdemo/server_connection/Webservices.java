@@ -1,14 +1,12 @@
 package com.shail.sixtdemo.server_connection;
 
 /**
- * Created by joyal on 10/5/2015.
+ * Created by Shailendra Singh on 28-Aug-17.
+ * iTexico
+ * ssingh@itexico.net
  */
 
-import android.content.Context;
-
 import com.shail.sixtdemo.interfaces.AsyncCallBackInterface;
-
-import org.json.JSONObject;
 
 public class Webservices {
 

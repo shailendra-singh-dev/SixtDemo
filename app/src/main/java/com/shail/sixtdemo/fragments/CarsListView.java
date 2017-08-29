@@ -1,28 +1,20 @@
 package com.shail.sixtdemo.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shail.sixtdemo.R;
-import com.shail.sixtdemo.activities.MainActivity;
 import com.shail.sixtdemo.adapter.RecyclerViewAdapter;
 import com.shail.sixtdemo.model.Car;
 import com.shail.sixtdemo.utils.CommonActions;
-import com.shail.sixtdemo.views.AspectRatioImageView;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.BitSet;
+import com.shail.sixtdemo.utils.Print;
 
 
 /**
@@ -35,18 +27,12 @@ public class CarsListView extends BaseFragment {
     private RecyclerView mRecyclerView;
 
     public static CarsListView newInstance() {
-
         Bundle args = new Bundle();
-
         CarsListView fragment = new CarsListView();
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +55,7 @@ public class CarsListView extends BaseFragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mRecyclerView) {
+        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter() {
 
             @Override
             protected View createView(Context context, ViewGroup viewGroup, int viewType) {
@@ -78,26 +64,36 @@ public class CarsListView extends BaseFragment {
 
             @Override
             protected void bindView(final int position, ViewHolder viewHolder) {
-                if (null == CARS || CARS.isEmpty()) {
+                if (null == mCarArrayList || mCarArrayList.isEmpty()) {
                     return;
                 }
 
-                final Car car = CARS.get(position);
+                final Car car = mCarArrayList.get(position);
 
-                TextView carNameView = (TextView) viewHolder.getView(R.id.car_name);
+                TextView carInfoView = (TextView) viewHolder.getView(R.id.car_info);
                 TextView carLicensePlatView = (TextView) viewHolder.getView(R.id.car_license_plat);
-                AspectRatioImageView carLogo = (AspectRatioImageView) viewHolder.getView(R.id.car_logo);
-
+                ImageView carLogo = (ImageView) viewHolder.getView(R.id.car_logo);
                 String carName = car.getName();
                 String carLicensePlate = car.getLicensePlate();
+                String carMake = car.getMake();
+                String carSeries = car.getSeries();
                 String carCarImageUrl = car.getCarImageUrl();
 
-                if (null != carName && !carName.isEmpty()) {
-                    carNameView.setText(carName);
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(carName);
+                stringBuilder.append(" ");
+                stringBuilder.append(carSeries);
+                stringBuilder.append(" ");
+                stringBuilder.append(carMake);
+                String carInfo = stringBuilder.toString();
+
+                if (!carInfo.isEmpty()) {
+                    carInfoView.setText(carInfo);
                 }
                 if (null != carLicensePlate && !carLicensePlate.isEmpty()) {
                     carLicensePlatView.setText(carLicensePlate);
                 }
+                Print.i("SHAIL bindView(),carCarImageUrl:" + carCarImageUrl);
                 if (null != carCarImageUrl && !carCarImageUrl.isEmpty()) {
                     CommonActions.loadImagebyPicasso(mMainActivity, carCarImageUrl, carLogo, android.R.drawable.ic_menu_mylocation, android.R.drawable.stat_notify_error);
                 }
@@ -105,23 +101,20 @@ public class CarsListView extends BaseFragment {
 
             @Override
             public int getItemCount() {
-                if (null == CARS || CARS.isEmpty()) {
+                if (null == mCarArrayList || mCarArrayList.isEmpty()) {
                     return 0;
                 }
-                return CARS.size();
+                return mCarArrayList.size();
             }
 
             @Override
             public long getItemId(int position) {
-                if (null == CARS || CARS.isEmpty()) {
+                if (null == mCarArrayList || mCarArrayList.isEmpty()) {
                     return 0;
                 }
 
-                final Car car = CARS.get(position);
+                final Car car = mCarArrayList.get(position);
                 return car.hashCode();
-            }
-
-            public void setSelected(int position) {
             }
         };
 

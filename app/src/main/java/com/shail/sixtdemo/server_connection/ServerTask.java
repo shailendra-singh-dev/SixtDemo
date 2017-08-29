@@ -2,7 +2,6 @@ package com.shail.sixtdemo.server_connection;
 
 
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 
 import com.shail.sixtdemo.application.SixtApplication;
 import com.shail.sixtdemo.interfaces.AsyncCallBackInterface;
@@ -11,6 +10,11 @@ import com.shail.sixtdemo.utils.AppUtils;
 import com.shail.sixtdemo.utils.Print;
 
 import java.io.IOException;
+/**
+ * Created by Shailendra Singh on 28-Aug-17.
+ * iTexico
+ * ssingh@itexico.net
+ */
 
 public class ServerTask {
     public static final int MAX_RETRY_COUNT = 5;
@@ -29,11 +33,11 @@ public class ServerTask {
         if (isInternetConnectionAvailable) {
             new OkHttptask().execute();
         } else {
-            MessagePumpEngine.sendAppMessage(MessagePumpEngine.MessageID.NM_WIFI_DISABLED);
+            MessagePumpEngine.sendAppMessage(MessagePumpEngine.MessageID.INTERNET_NOT_AVAILABLE);
         }
     }
 
-    private class OkHttptask extends AsyncTask<Void, Void, String> {
+    private final class OkHttptask extends AsyncTask<Void, Void, String> {
 
         private int mRetryCount;
 
