@@ -18,10 +18,9 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'boolean', 'DEBUG_MODE', 'true'
+            minifyEnabled false
         }
         release {
-            buildConfigField 'boolean', 'DEBUG_MODE', 'false'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -38,13 +37,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.0'
     testCompile 'junit:junit:4.12'
 
-    //Ok HTTP
+    //Ok HTTP for Network related calls
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
 
-    //Google play services e.g Maps,GCM,AppIndexing
+    //Google play services e.g Maps
     compile 'com.google.android.gms:play-services-maps:9.8.0'
 
-    //Picasso
+    //Picasso for image loading
     compile 'com.squareup.picasso:picasso:2.5.2'
 
 }

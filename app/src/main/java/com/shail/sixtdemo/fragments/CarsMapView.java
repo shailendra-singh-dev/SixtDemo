@@ -145,6 +145,9 @@ public class CarsMapView extends BaseFragment implements GoogleMap.OnMarkerClick
                         .title(carInfo);
 
                 Marker locationMarker = mGoogleMap.addMarker(markerOptions);
+                if(null == locationMarker.getTag()){
+                    locationMarker.setTag(carInfo);
+                }
 
                 PicassoMarker picassoMarker = new PicassoMarker(locationMarker);
                 String carImageUrl = car.getCarImageUrl();
