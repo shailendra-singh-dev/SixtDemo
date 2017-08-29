@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "25.0.0"
+    defaultConfig {
+        applicationId "com.shail.sixtdemo"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'REQUEST_URL', '"http://www.codetalk.de/cars.json"'
+        buildConfigField 'String', 'BASE_URL', '"https://prod.drive-now-content.com/fileadmin/user_upload_global/assets/cars/"'
+        buildConfigField 'String', 'BASE_URL_SEPERATOR', '"/"'
+        buildConfigField 'String', 'BASE_URL_POSTFIX', '"2x/car.png"'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //Support Library.
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    testCompile 'junit:junit:4.12'
+
+    //Ok HTTP
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+
+    //Google play services e.g Maps,GCM,AppIndexing
+    compile 'com.google.android.gms:play-services-gcm:9.8.0'
+    compile 'com.google.android.gms:play-services-maps:9.8.0'
+    compile 'com.google.android.gms:play-services:9.8.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
+    compile 'com.google.android.gms:play-services-location:9.8.0'
+
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+}
